@@ -4,6 +4,7 @@
        <meta chareset="<?php bloginfo('chareset');?>">
        <meta name="viewport" content="width=device-width, initial-scale=1">
        <?php wp_head(); ?>
+         <script language="JavaScript" type="text/javascript" src="./wp-content/themes/fictional-university-theme/js/jquery.js"></script>
     </head>
    <body <?php body_class(); ?>>
      <header class="site-header">
