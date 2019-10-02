@@ -45,8 +45,9 @@ class Search {
     }
 
      getResults() {
-      this.resultsDiv.html("This is working!");
-      this.isSpinnerVisibile = false;
+      $.getJSON('http://localhost:3002/wp-json/wp/v2/posts?search=' + this.searchOverlayField.val(), function(posts){
+          alert(posts[0].title.rendered);
+      });
      }
     keyPressDispatcher(e){
 
