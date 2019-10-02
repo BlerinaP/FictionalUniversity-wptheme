@@ -43,17 +43,18 @@ class Search {
       this.previousValue = this.searchOverlayField.val();
 
     }
-
+// Showing "general information" and items that we search. ex: when we search lorem- to show all posts with that content.
      getResults() {
       $.getJSON('http://localhost:3002/wp-json/wp/v2/posts?search=' + this.searchOverlayField.val(), posts => {
           this.resultsDiv.html(`
            <h2 class="search-overlay__section-title">General Information</h2>
-           <ul class ="link-list min-list">
+           ${posts.length ?'<ul class ="link-list min-list">' : '<p> No general information matches that search </p>'}
            ${posts.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
-           </ul>
+           ${posts.length ? '</ul>' : ''}
           `);
       });
      }
+     // If we touch S or ESC with codes(83,27) overlay to open or close. But using conditions that "if we touch S in other text area to not show Overlay".
     keyPressDispatcher(e){
 
       if(e.keyCode==83 && !this.isOverlayOpen && !$("input , textarea").is(':focus')){
