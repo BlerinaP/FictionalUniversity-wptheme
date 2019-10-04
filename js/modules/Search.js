@@ -46,17 +46,18 @@ class Search {
     }
 // Showing "general information" and items that we search. ex: when we search lorem- to show all posts with that content.
      getResults() {
-      $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchOverlayField.val(), posts => {
-          $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchOverlayField.val(), pages => {
-              var combinedResults = posts.concat(pages);
-              this.resultsDiv.html(`
+      $.when (
+          $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchOverlayField.val()),
+          $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchOverlayField.val())
+      ).then((posts,pages)=>{
+          var combinedResults = posts[0].concat(pages[0]);
+          this.resultsDiv.html(`
            <h2 class="search-overlay__section-title">General Information</h2>
            ${combinedResults.length ?'<ul class ="link-list min-list">' : '<p> No general information matches that search </p>'}
            ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
            ${combinedResults.length ? '</ul>' : ''}
           `);
-              this.isSpinnerVisibile = false;
-          });
+          this.isSpinnerVisibile = false;
       });
      }
      // If we touch S or ESC with codes(83,27) overlay to open or close. But using conditions that "if we touch S in other text area to not show Overlay".
