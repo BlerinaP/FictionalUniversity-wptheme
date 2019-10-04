@@ -58,6 +58,8 @@ class Search {
            ${combinedResults.length ? '</ul>' : ''}
           `);
           this.isSpinnerVisibile = false;
+      }, () => {
+          this.resultsDiv.html('<p>Unexepected error; please try again</p>');
       });
      }
      // If we touch S or ESC with codes(83,27) overlay to open or close. But using conditions that "if we touch S in other text area to not show Overlay".
