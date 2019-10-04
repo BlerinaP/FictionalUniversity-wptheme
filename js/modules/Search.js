@@ -18,7 +18,7 @@ class Search {
   }
   //2.events
   events() {
-    this.openButton.on("click", this.openOverlay.bind(this));
+    this.openButton.on("click", this.openOverlay.bind(this));  // me vet nesin per BIND(THIS)
     this.closeButton.on("click",this.closeOverlay.bind(this));
     $(document).on("keydown",this.keyPressDispatcher.bind(this));
     this.searchOverlayField.on("keyup" , this.typingLogic.bind(this));
@@ -50,11 +50,11 @@ class Search {
           $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchOverlayField.val()),
           $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchOverlayField.val())
       ).then((posts,pages)=>{
-          var combinedResults = posts[0].concat(pages[0]);
+          var combinedResults = posts[0].concat(pages[0]); // (me vet nesin per qeto 0)
           this.resultsDiv.html(`
            <h2 class="search-overlay__section-title">General Information</h2>
            ${combinedResults.length ?'<ul class ="link-list min-list">' : '<p> No general information matches that search </p>'}
-           ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
+           ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a> ${item.type == 'post' ? `by ${item.authorName}`: ''}</li>`).join('')}
            ${combinedResults.length ? '</ul>' : ''}
           `);
           this.isSpinnerVisibile = false;
