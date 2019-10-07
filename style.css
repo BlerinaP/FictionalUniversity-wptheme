@@ -1770,7 +1770,7 @@ body.admin-bar .search-overlay {
   display: inline-block;
   width: 200px;
   margin-right: 15px;
-  background-color: #F95738;
+  //background-color: #F95738;
   overflow: hidden;
 }
 
