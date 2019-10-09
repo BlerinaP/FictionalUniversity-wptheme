@@ -39,13 +39,13 @@ if(!$args['photo']){
 
 
 function university_files(){
-    wp_enqueue_script('googleMap','//maps.googleapis.com/maps/api/js?key=AIzaSyAmN0-zo4mGo_Jl9IjV--rfJNdm2BbiPUI',NULL,  '1.0', true);
+  wp_enqueue_script('googleMap','//maps.googleapis.com/maps/api/js?key=AIzaSyAmN0-zo4mGo_Jl9IjV--rfJNdm2BbiPUI',NULL,  '1.0', true);
   wp_enqueue_script('main-university-js',get_theme_file_uri('/js/scripts-bundled.js'), NULL,  microtime(), true);
   wp_enqueue_style('custom-google-fonts','//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
   wp_enqueue_style('font-awesome','//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-  wp_enqueue_style('university_main_styles', get_stylesheet_uri(), NULL, microtime());
+  wp_enqueue_style('university_main_styles', get_stylesheet_uri());
   wp_localize_script('main-university-js' , 'universityData', array(
-          'root_url' => get_site_url(),
+   'root_url' => get_site_url(),
 
   ));
 }
@@ -106,14 +106,32 @@ add_filter('acf/fields/google_map/api', 'universityMapKey');
     }
 
 
-add_action('wp_loaded', 'noSubsAdminBar');
+     add_action('wp_loaded', 'noSubsAdminBar');
 
-function noSubsAdminBar () {
-    $ourCurrentUser = wp_get_current_user();
-    if (count($ourCurrentUser -> roles) == 1 AND $ourCurrentUser -> roles[0] == 'subscriber') {
-       show_admin_bar(false);
+     function noSubsAdminBar () {
+     $ourCurrentUser = wp_get_current_user();
+     if (count($ourCurrentUser -> roles) == 1 AND $ourCurrentUser -> roles[0] == 'subscriber') {
+     show_admin_bar(false);
     }
 }
 
+//Customize login screen
 
+ add_filter('login_headerurl', 'ourHeaderUrl');
+
+function ourHeaderUrl() {
+    return esc_url(site_url('/'));
+}
+
+add_action('login_enqueue_scripts', 'ourLoginCSS');
+
+function ourLoginCSS() {
+    wp_enqueue_style('university_main_styles', get_stylesheet_uri());
+    wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+}
+ add_filter('login_headertitle', 'ourLoginTitle');
+
+     function ourLoginTitle(){
+         return get_bloginfo('name');
+     }
 
