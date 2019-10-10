@@ -8,6 +8,7 @@ import $ from 'jquery';
         $(".delete-note").on("click" , this.deleteNote);
         $(".edit-note").on("click" , this.editNote.bind(this));
         $(".update-note").on("click" , this.updateNote.bind(this));
+        $(".submit-note").on("click" , this.createNote.bind(this));
     }
 
     //Methods will go here
@@ -68,6 +69,32 @@ import $ from 'jquery';
              data: ourUpdatedPost,
              success: (response) => {
                  this.makeNoteReadOnly(thisNote);
+                 console.log("Congrats");
+                 console.log(response);
+             },
+             error: (response) => {
+                 console.log("sorry");
+                 console.log(response);
+             }
+         });
+     }
+     createNote(e) {
+
+         var ourNewPost = {
+             'title': $(".new-note-title").val(),
+             'content':$(".new-note-body").val(),
+             'status': 'publish'
+         }
+         $.ajax({
+             beforeSend: (xhr) => {
+                 xhr.setRequestHeader('X-WP-Nonce',universityData.nonce);
+             },
+             url: universityData.root_url + '/wp-json/wp/v2/note/',
+             type: 'POST',
+             data: ourNewPost,
+             success: (response) => {
+              $(".new-note-title, .new-note-body").val('');
+                 $('<li>Imagine</li>').prependTo("#my-notes").hide().slideDown();
                  console.log("Congrats");
                  console.log(response);
              },
